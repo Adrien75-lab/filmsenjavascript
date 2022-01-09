@@ -38,6 +38,7 @@ window.onload = function () {
   input[0].addEventListener("keyup", recherche);
   input[1].addEventListener("mouseup", checkbox);
   films.addEventListener("mouseover", survolFilm);
+  films.addEventListener("click", selectionFilm);
 
   function recherche(event) {
     var inputValue = event.target.value;
@@ -64,8 +65,39 @@ window.onload = function () {
       details.style.display = "block";
     }
   }
-  function survolFilm(event){
-      var elementSurvolee = event.target;
-      console.log(elementSurvolee);
+  function survolFilm(event) {
+    // parentNode permet d'acceder a l'élément parent de l'élément
+    var elementSurvolee = event.target.parentNode;
+    var identifiantFilm = elementSurvolee.id;
+    var position;
+    if (identifiantFilm == "catalog") {
+      return;
+    } else if (identifiantFilm.length == 6) {
+      position = identifiantFilm[0];
+    } else if (identifiantFilm.length == 7) {
+      position = identifiantFilm[0] + identifiantFilm[1];
+    } else {
+      return;
+    }
+    var descriptionFilm = filmData[position].text;
+    document.getElementById("details").innerHTML = descriptionFilm;
+  }
+  function selectionFilm(event) {
+      var film = event.target.parentNode;
+      var select1 = document.getElementById("selection1");
+      var select2 = document.getElementById("selection2");
+      var select1Child = select1.childNodes;
+      var select2Child = select2.childNodes;
+      if(select1Child.length == 1) {
+          // partie selection1 est vide
+          select1.insertBefore(film, select1Child[0]);
+      }else if (select2Child.length == 1){
+          // partie selection2 est vide
+          select2.insertBefore(film, select2Child[0]);
+      }else {
+          alert("Désolé, vous avez déja choisi 2 films!");
+      }
+      
+      
   }
 };
